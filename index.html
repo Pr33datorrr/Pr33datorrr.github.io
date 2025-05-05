@@ -5,90 +5,214 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yash Gupta - Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Define colors using CSS variables
+                        'background-main': 'var(--background-main)',
+                        'text-base': 'var(--text-base)',
+                        'accent-primary': 'var(--accent-primary)',
+                        'accent-secondary': 'var(--accent-secondary)',
+                        'card-bg': 'var(--card-bg)',
+                        'border-subtle': 'var(--border-subtle)',
+                    },
+                     fontFamily: {
+                        // Keep Fira Code for a coding feel, but use sans as primary
+                         sans: ['"Fira Code"', 'monospace', 'sans-serif'],
+                         mono: ['"Fira Code"', 'monospace'],
+                     }
+                }
+            }
+        }
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+
     <style>
-        /* Custom scrollbar for better aesthetics (optional) */
+        /* Define CSS variables for dark theme (default) */
+        :root {
+            --background-main: #1f2937;
+            --text-base: #e5e7eb;
+            --accent-primary: #60a5fa;
+            --accent-secondary: #34d399;
+            --card-bg: #374151;
+            --border-subtle: #4b5563;
+        }
+
+        /* Define CSS variables for light theme */
+        body.light-theme {
+            --background-main: #f3f4f6;
+            --text-base: #1f2937;
+            --accent-primary: #1d4ed8;
+            --accent-secondary: #059669;
+            --card-bg: #ffffff;
+            --border-subtle: #d1d5db;
+        }
+
+        /* Custom scrollbar - adjusted colors based on theme */
         ::-webkit-scrollbar {
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #f1f1f1;
+            background: var(--background-main); /* Use CSS variable */
         }
         ::-webkit-scrollbar-thumb {
-            background: #60a5fa; /* Blue accent */
+            background: var(--accent-primary); /* Use CSS variable */
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #3b82f6; /* Darker blue */
+            background: #3b82f6; /* Darker primary accent on hover */
         }
+
         /* Smooth scrolling behavior */
         html {
             scroll-behavior: smooth;
         }
         /* Add padding to sections for scroll spy offset (adjust if header height changes) */
         section {
-            scroll-margin-top: 70px; /* Increased slightly */
+            scroll-margin-top: 80px; /* Increased for fixed header */
         }
-        /* Simple transition for project cards */
+        /* Simple transition for project cards - subtle shadow and lift */
         .project-card {
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         }
         .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transform: translateY(-8px); /* Slightly more pronounced lift */
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.5); /* More noticeable shadow */
+        }
+
+        /* Particle background container */
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Send it to the back */
+            background-color: var(--background-main); /* Use CSS variable */
+        }
+
+
+        /* Typing effect for hero text - adjusted cursor color based on theme */
+        .typing-text {
+            overflow: hidden;
+            border-right: .15em solid var(--accent-primary); /* Use CSS variable */
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: .05em;
+            animation:
+              typing 3.5s steps(40, end),
+              blink-caret .75s step-end infinite;
+        }
+
+        /* The typing animation effect */
+        @keyframes typing {
+          from { width: 0 }
+          to { width: 100% }
+        }
+
+        /* The typewriter cursor effect - adjusted color based on theme */
+        @keyframes blink-caret {
+          from, to { border-color: transparent }
+          50% { border-color: var(--accent-primary); } /* Use CSS variable */
+        }
+
+        /* Style for the skill icons - subtle scale on hover */
+        .skill-icon {
+             transition: transform 0.2s ease-in-out;
+        }
+         .skill-icon:hover {
+             transform: scale(1.1); /* Slight scale on hover */
+         }
+
+         /* Timeline dot styling - adjusted color and position */
+        .timeline-dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            left: -15px; /* Adjusted position to align with the border line */
+            top: 0.4em; /* Adjusted vertical position again */
+            border: 2px solid var(--card-bg); /* Use CSS variable */
+            background-color: var(--accent-secondary); /* Use CSS variable */
+        }
+
+        /* Theme toggle button styling */
+        #theme-toggle, #theme-toggle-mobile {
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: color 0.3s ease-in-out;
+            color: var(--text-base); /* Use CSS variable */
+        }
+
+        #theme-toggle:hover, #theme-toggle-mobile:hover {
+             color: var(--accent-primary); /* Use CSS variable on hover */
         }
     </style>
 </head>
-<body class="bg-gray-50 font-sans antialiased text-gray-800">
+<body class="dark-theme bg-background-main text-text-base font-sans antialiased">
 
-    <nav class="bg-white shadow-md fixed w-full z-20 top-0">
+    <div id="particles-js"></div>
+
+    <nav class="bg-card-bg shadow-lg fixed w-full z-20 top-0 bg-opacity-90 backdrop-filter backdrop-blur-lg">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-xl font-bold text-blue-700 hover:text-blue-800 transition duration-300">Yash Gupta</a>
-            <div class="hidden md:flex space-x-6">
-                <a href="#about" class="text-gray-600 hover:text-blue-600 transition duration-300">About</a>
-                <a href="#skills" class="text-gray-600 hover:text-blue-600 transition duration-300">Skills</a>
-                <a href="#projects" class="text-gray-600 hover:text-blue-600 transition duration-300">Projects</a>
-                <a href="#experience" class="text-gray-600 hover:text-blue-600 transition duration-300">Experience</a>
-                <a href="#education" class="text-gray-600 hover:text-blue-600 transition duration-300">Education</a>
-                <a href="#certifications" class="text-gray-600 hover:text-blue-600 transition duration-300">Certifications</a>
-                <a href="#contact" class="text-gray-600 hover:text-blue-600 transition duration-300">Contact</a>
+            <a href="#" class="text-xl font-bold text-accent-primary hover:text-accent-secondary transition duration-300">Yash Gupta<span class="text-text-base">_</span></a>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="#about" class="text-text-base hover:text-accent-primary transition duration-300">About</a>
+                <a href="#skills" class="text-text-base hover:text-accent-primary transition duration-300">Skills</a>
+                <a href="#projects" class="text-text-base hover:text-accent-primary transition duration-300">Projects</a>
+                <a href="#experience" class="text-text-base hover:text-accent-primary transition duration-300">Experience</a>
+                <a href="#education" class="text-text-base hover:text-accent-primary transition duration-300">Education</a>
+                <a href="#certifications" class="text-text-base hover:text-accent-primary transition duration-300">Certifications</a>
+                <a href="#contact" class="text-text-base hover:text-accent-primary transition duration-300">Contact</a>
+                <button id="theme-toggle" aria-label="Toggle theme">
+                    <i class="fas fa-sun" id="theme-toggle-icon"></i>
+                </button>
             </div>
-            <div class="md:hidden">
-                <button id="mobile-menu-button" class="text-gray-600 focus:outline-none">
+            <div class="md:hidden flex items-center">
+                 <button id="theme-toggle-mobile" aria-label="Toggle theme" class="mr-4">
+                    <i class="fas fa-sun" id="theme-toggle-icon-mobile"></i>
+                </button>
+                <button id="mobile-menu-button" class="text-text-base focus:outline-none hover:text-accent-primary">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
                 </button>
             </div>
         </div>
-        <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-200">
-             <a href="#about" class="block px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition duration-150">About</a>
-             <a href="#skills" class="block px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition duration-150">Skills</a>
-             <a href="#projects" class="block px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition duration-150">Projects</a>
-             <a href="#experience" class="block px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition duration-150">Experience</a>
-             <a href="#education" class="block px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition duration-150">Education</a>
-             <a href="#certifications" class="block px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition duration-150">Certifications</a>
-             <a href="#contact" class="block px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition duration-150">Contact</a>
+        <div id="mobile-menu" class="md:hidden hidden bg-card-bg border-t border-border-subtle">
+             <a href="#about" class="block px-4 py-2 text-text-base hover:bg-background-main hover:text-accent-primary transition duration-150">About</a>
+             <a href="#skills" class="block px-4 py-2 text-text-base hover:bg-background-main hover:text-accent-primary transition duration-150">Skills</a>
+             <a href="#projects" class="block px-4 py-2 text-text-base hover:bg-background-main hover:text-accent-primary transition duration-150">Projects</a>
+             <a href="#experience" class="block px-4 py-2 text-text-base hover:bg-background-main hover:text-accent-primary transition duration-150">Experience</a>
+             <a href="#education" class="block px-4 py-2 text-text-base hover:bg-background-main hover:text-accent-primary transition duration-150">Education</a>
+             <a href="#certifications" class="block px-4 py-2 text-text-base hover:bg-background-main hover:text-accent-primary transition duration-150">Certifications</a>
+             <a href="#contact" class="block px-4 py-2 text-text-base hover:bg-background-main hover:text-accent-primary transition duration-150">Contact</a>
         </div>
     </nav>
 
-    <div class="container mx-auto px-4 sm:px-6 pt-24 pb-12"> <section id="about" class="mb-20">
-            <div class="bg-white p-8 rounded-lg shadow-lg flex flex-col md:flex-row items-center" data-aos="fade-up">
+    <div class="container mx-auto px-4 sm:px-6 pt-24 pb-12 relative z-10">
+        <section id="about" class="mb-20">
+            <div class="bg-card-bg p-8 rounded-lg shadow-lg flex flex-col md:flex-row items-center border border-border-subtle" data-aos="fade-up">
                 <div class="md:w-1/4 mb-6 md:mb-0 md:mr-8 flex-shrink-0">
-                     <img src="https://placehold.co/200x200/EBF4FF/7F9CF5?text=Yash+G" alt="Yash Gupta" class="rounded-full mx-auto shadow-md border-4 border-white">
+                     <img src="https://placehold.co/200x200/374151/60a5fa?text=Yash+G" alt="Yash Gupta" class="rounded-full mx-auto shadow-md border-4 border-accent-primary">
                      </div>
                 <div class="md:w-3/4">
-                    <h2 class="text-3xl font-bold mb-4 text-blue-700">About Me</h2>
-                    <p class="text-lg leading-relaxed text-gray-700 mb-6">
+                    <h2 class="text-3xl font-bold mb-4 text-accent-primary typing-text">About Me_</h2>
+                    <p class="text-lg leading-relaxed text-text-base mb-6">
                         Motivated and detail-oriented data and IT professional with over 3 years of experience in data analysis, database management, and enterprise system support. Adept at delivering end-to-end data solutions, automating workflows, and driving operational efficiencies through innovative problem-solving. Hands-on experience with Python, SQL, SAP ABAP, and cloud platforms, as well as strong exposure to distributed computing technologies. Proven ability to communicate complex technical information clearly to stakeholders, collaborate across departments, and support both technical and retail operations. Passionate about turning data into actionable insights to support business strategy and improve customer experience.
                     </p>
                     <div class="flex space-x-5">
-                        <a href="https://linkedin.com/in/iyashgupta" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 transition duration-300" aria-label="LinkedIn Profile">
+                        <a href="https://linkedin.com/in/iyashgupta" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:text-accent-secondary transition duration-300 skill-icon" aria-label="LinkedIn Profile">
                             <i class="fab fa-linkedin fa-2x"></i>
                         </a>
-                        <a href="[Your GitHub URL]" target="_blank" rel="noopener noreferrer" class="text-gray-800 hover:text-black transition duration-300" aria-label="GitHub Profile">
+                        <a href="https://github.com/Pr33datorrr" target="_blank" rel="noopener noreferrer" class="text-text-base hover:text-accent-primary transition duration-300 skill-icon" aria-label="GitHub Profile">
                             <i class="fab fa-github fa-2x"></i>
                             </a>
-                        <a href="mailto:iyashgupta@gmail.com" class="text-red-600 hover:text-red-800 transition duration-300" aria-label="Email">
+                        <a href="mailto:iyashgupta@gmail.com" class="text-red-500 hover:text-red-400 transition duration-300 skill-icon" aria-label="Email">
                             <i class="fas fa-envelope fa-2x"></i>
                         </a>
                     </div>
@@ -97,117 +221,131 @@
         </section>
 
         <section id="skills" class="mb-20">
-            <div class="bg-white p-8 rounded-lg shadow-lg" data-aos="fade-up">
-                <h2 class="text-3xl font-bold mb-8 text-center text-blue-700">Skills</h2>
+            <div class="bg-card-bg p-8 rounded-lg shadow-lg border border-border-subtle" data-aos="fade-up">
+                <h2 class="text-3xl font-bold mb-8 text-center text-accent-primary">Skills<span class="text-text-base">_</span></h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     <div data-aos="fade-up" data-aos-delay="100">
-                        <h3 class="text-xl font-semibold mb-3 text-gray-800 flex items-center"><i class="fas fa-code mr-2 text-blue-500"></i>Programming & Scripting</h3>
-                        <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4">
-                            <li>Python</li>
-                            <li>SQL</li>
-                            <li>.NET</li>
-                            <li>SAP ABAP</li>
-                            <li>Shell Scripting</li>
-                        </ul>
+                        <h3 class="text-xl font-semibold mb-3 text-accent-secondary flex items-center"><i class="fas fa-code mr-2 skill-icon text-accent-primary"></i>Programming & Scripting</h3>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">Python</span>
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">SQL</span>
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">.NET</span>
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">SAP ABAP</span>
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">Shell Scripting</span>
+                        </div>
                     </div>
                     <div data-aos="fade-up" data-aos-delay="150">
-                        <h3 class="text-xl font-semibold mb-3 text-gray-800 flex items-center"><i class="fas fa-database mr-2 text-green-500"></i>Database Management</h3>
-                        <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4">
-                            <li>MS SQL Server</li>
-                            <li>MySQL</li>
-                            <li>Data Modeling</li>
-                            <li>Query Optimization</li>
-                        </ul>
+                        <h3 class="text-xl font-semibold mb-3 text-accent-secondary flex items-center"><i class="fas fa-database mr-2 skill-icon text-accent-primary"></i>Database Management</h3>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">MS SQL Server</span>
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">MySQL</span>
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">Data Modeling</span>
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">Query Optimization</span>
+                        </div>
                     </div>
                     <div data-aos="fade-up" data-aos-delay="200">
-                        <h3 class="text-xl font-semibold mb-3 text-gray-800 flex items-center"><i class="fas fa-chart-bar mr-2 text-purple-500"></i>Data Analysis & Visualization</h3>
-                        <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4">
-                            <li>Power BI</li>
-                            <li>Tableau</li>
-                            <li>Looker Studio</li>
-                            <li>Excel (Advanced)</li>
-                        </ul>
+                        <h3 class="text-xl font-semibold mb-3 text-accent-secondary flex items-center"><i class="fas fa-chart-bar mr-2 skill-icon text-accent-primary"></i>Data Analysis & Visualization</h3>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">Power BI</span>
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">Tableau</span>
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">Looker Studio</span>
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">Excel (Advanced)</span>
+                        </div>
                     </div>
                     <div data-aos="fade-up" data-aos-delay="250">
-                        <h3 class="text-xl font-semibold mb-3 text-gray-800 flex items-center"><i class="fas fa-laptop-code mr-2 text-red-500"></i>Web Development</h3>
-                        <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4">
-                            <li>HTML</li>
-                            <li>CSS</li>
-                            <li>JavaScript</li>
-                        </ul>
+                        <h3 class="text-xl font-semibold mb-3 text-accent-secondary flex items-center"><i class="fas fa-laptop-code mr-2 skill-icon text-accent-primary"></i>Web Development</h3>
+                         <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">HTML</span>
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">CSS</span>
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">JavaScript</span>
+                        </div>
                     </div>
                     <div data-aos="fade-up" data-aos-delay="300">
-                        <h3 class="text-xl font-semibold mb-3 text-gray-800 flex items-center"><i class="fas fa-building mr-2 text-yellow-500"></i>Enterprise Tools & Platforms</h3>
-                        <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4">
-                            <li>SAP (ABAP, Data Validation, Workflow Optimization)</li>
-                            <li>Salesforce (Exposure)</li>
-                        </ul>
+                        <h3 class="text-xl font-semibold mb-3 text-accent-secondary flex items-center"><i class="fas fa-building mr-2 skill-icon text-accent-primary"></i>Enterprise Tools & Platforms</h3>
+                         <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">SAP (ABAP, Data Validation, Workflow Optimization)</span>
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">Salesforce (Exposure)</span>
+                        </div>
                     </div>
                      <div data-aos="fade-up" data-aos-delay="350">
-                        <h3 class="text-xl font-semibold mb-3 text-gray-800 flex items-center"><i class="fas fa-cloud mr-2 text-indigo-500"></i>Cloud & Big Data</h3>
-                        <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4">
-                             <li>AWS (Basic)</li>
-                             <li>Hadoop</li>
-                             <li>Spark</li>
-                        </ul>
+                        <h3 class="text-xl font-semibold mb-3 text-accent-secondary flex items-center"><i class="fas fa-cloud mr-2 skill-icon text-accent-primary"></i>Cloud & Big Data</h3>
+                         <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">AWS (Basic)</span>
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">Hadoop</span>
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">Spark</span>
+                        </div>
                     </div>
                     <div data-aos="fade-up" data-aos-delay="400">
-                        <h3 class="text-xl font-semibold mb-3 text-gray-800 flex items-center"><i class="fas fa-headset mr-2 text-teal-500"></i>IT Support & Operations</h3>
-                         <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4">
-                            <li>Hardware Diagnostics</li>
-                            <li>Network Configuration</li>
-                            <li>Technical Troubleshooting</li>
-                            <li>System Maintenance</li>
-                        </ul>
+                        <h3 class="text-xl font-semibold mb-3 text-accent-secondary flex items-center"><i class="fas fa-headset mr-2 skill-icon text-accent-primary"></i>IT Support & Operations</h3>
+                         <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">Hardware Diagnostics</span>
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">Network Configuration</span>
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">Technical Troubleshooting</span>
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">System Maintenance</span>
+                        </div>
                     </div>
                      <div data-aos="fade-up" data-aos-delay="450">
-                        <h3 class="text-xl font-semibold mb-3 text-gray-800 flex items-center"><i class="fas fa-tools mr-2 text-orange-500"></i>Other Tools</h3>
-                         <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4">
-                            <li>Microsoft Office Suite</li>
-                            <li>Visual Studio</li>
-                            <li>Git</li>
-                        </ul>
+                        <h3 class="text-xl font-semibold mb-3 text-accent-secondary flex items-center"><i class="fas fa-tools mr-2 skill-icon text-accent-primary"></i>Other Tools</h3>
+                         <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">Microsoft Office Suite</span>
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">Visual Studio</span>
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">Git</span>
+                        </div>
                     </div>
                      <div data-aos="fade-up" data-aos-delay="500">
-                        <h3 class="text-xl font-semibold mb-3 text-gray-800 flex items-center"><i class="fas fa-users mr-2 text-pink-500"></i>Soft Skills</h3>
-                         <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4">
-                            <li>Strong Communication</li>
-                            <li>Technical Presentation</li>
-                            <li>Client Relationship Management</li>
-                            <li>Team Collaboration</li>
-                        </ul>
+                        <h3 class="text-xl font-semibold mb-3 text-accent-secondary flex items-center"><i class="fas fa-users mr-2 skill-icon text-accent-primary"></i>Soft Skills</h3>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">Strong Communication</span>
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">Technical Presentation</span>
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">Client Relationship Management</span>
+                            <span class="bg-border-subtle text-text-base px-3 py-1 rounded-full">Team Collaboration</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
         <section id="projects" class="mb-20">
-            <div class="bg-white p-8 rounded-lg shadow-lg" data-aos="fade-up">
-                <h2 class="text-3xl font-bold mb-8 text-center text-blue-700">Projects</h2>
+            <div class="bg-card-bg p-8 rounded-lg shadow-lg border border-border-subtle" data-aos="fade-up">
+                <h2 class="text-3xl font-bold mb-8 text-center text-accent-primary">Projects<span class="text-text-base">_</span></h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="project-card border border-gray-200 rounded-lg overflow-hidden flex flex-col" data-aos="fade-up" data-aos-delay="100">
-                        <img src="https://placehold.co/600x400/EBF4FF/7F9CF5?text=AI+Menu+Planner" alt="AI Food Menu Planner Placeholder" class="w-full h-48 object-cover">
+                    <div class="project-card border border-border-subtle bg-background-main rounded-lg overflow-hidden flex flex-col" data-aos="fade-up" data-aos-delay="100">
+                        <img src="https://placehold.co/600x400/1f2937/60a5fa?text=AI+Menu+Planner" alt="AI Food Menu Planner Placeholder" class="w-full h-48 object-cover border-b border-border-subtle">
                         <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-semibold mb-2 text-gray-800">AI Based Food Menu Planner</h3>
-                            <p class="text-sm text-gray-500 mb-3">Tools: Python, SQL, REST APIs, Power BI</p>
-                            <p class="text-gray-700 mb-4 flex-grow">Developed a predictive dashboard for the Food Truck Association of Canada, implementing ML models for demand forecasting and menu optimization. Automated data collection and visualized sales trends.</p>
+                            <h3 class="text-xl font-semibold mb-2 text-accent-secondary">AI Based Food Menu Planner</h3>
+                            <p class="text-sm text-text-base mb-3 flex flex-wrap gap-1">
+                                <span class="bg-border-subtle text-text-base px-2 py-0.5 rounded-full">Python</span>
+                                <span class="bg-border-subtle text-text-base px-2 py-0.5 rounded-full">SQL</span>
+                                <span class="bg-border-subtle text-text-base px-2 py-0.5 rounded-full">REST APIs</span>
+                                <span class="bg-border-subtle text-text-base px-2 py-0.5 rounded-full">Power BI</span>
+                            </p>
+                            <p class="text-text-base mb-4 text-sm flex-grow">Developed a predictive dashboard for the Food Truck Association of Canada, implementing ML models for demand forecasting and menu optimization. Automated data collection and visualized sales trends.</p>
                             </div>
                     </div>
-                    <div class="project-card border border-gray-200 rounded-lg overflow-hidden flex flex-col" data-aos="fade-up" data-aos-delay="200">
-                         <img src="https://placehold.co/600x400/E6FFFA/38B2AC?text=Fitness+Tracker" alt="Fitness Tracker Placeholder" class="w-full h-48 object-cover">
+                    <div class="project-card border border-border-subtle bg-background-main rounded-lg overflow-hidden flex flex-col" data-aos="fade-up" data-aos-delay="200">
+                         <img src="https://placehold.co/600x400/1f2937/60a5fa?text=Fitness+Tracker" alt="Fitness Tracker Placeholder" class="w-full h-48 object-cover border-b border-border-subtle">
                          <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-semibold mb-2 text-gray-800">Fitness Tracker</h3>
-                            <p class="text-sm text-gray-500 mb-3">Tools: Python, SQL, Tableau</p>
-                            <p class="text-gray-700 mb-4 flex-grow">Created an interactive dashboard to track health metrics from wearable devices. Automated data cleaning and visualization, providing users insights to monitor fitness goals.</p>
+                            <h3 class="text-xl font-semibold mb-2 text-accent-secondary">Fitness Tracker</h3>
+                            <p class="text-sm text-text-base mb-3 flex flex-wrap gap-1">
+                                <span class="bg-border-subtle text-text-base px-2 py-0.5 rounded-full">Python</span>
+                                <span class="bg-border-subtle text-text-base px-2 py-0.5 rounded-full">SQL</span>
+                                <span class="bg-border-subtle text-text-base px-2 py-0.5 rounded-full">Tableau</span>
+                            </p>
+                            <p class="text-text-base mb-4 text-sm flex-grow">Created an interactive dashboard to track health metrics from wearable devices. Automated data cleaning and visualization, providing users insights to monitor fitness goals.</p>
                             </div>
                     </div>
-                    <div class="project-card border border-gray-200 rounded-lg overflow-hidden flex flex-col" data-aos="fade-up" data-aos-delay="300">
-                         <img src="https://placehold.co/600x400/FFF5EB/DD6B20?text=Crime+Hotspots" alt="Crime Hotspots Placeholder" class="w-full h-48 object-cover">
+                    <div class="project-card border border-border-subtle bg-background-main rounded-lg overflow-hidden flex flex-col" data-aos="fade-up" data-aos-delay="300">
+                         <img src="https://placehold.co/600x400/1f2937/60a5fa?text=Crime+Hotspots" alt="Crime Hotspots Placeholder" class="w-full h-48 object-cover border-b border-border-subtle">
                          <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-semibold mb-2 text-gray-800">Crime Hotspots Story Map</h3>
-                            <p class="text-sm text-gray-500 mb-3">Tools: ArcGIS Web Map, Dashboard, Form, Story Map</p>
-                            <p class="text-gray-700 mb-4 flex-grow">Developed an interactive ArcGIS StoryMap visualizing crime data by location, time, and type using police reports and public datasets. User-friendly interface for exploring spatial patterns.</p>
-                            <a href="https://storymaps.arcgis.com/stories/cdf283e657c14dec94d732aceded0fa9" target="_blank" rel="noopener noreferrer" class="mt-auto text-blue-600 hover:underline self-start">
+                            <h3 class="text-xl font-semibold mb-2 text-accent-secondary">Crime Hotspots Story Map</h3>
+                            <p class="text-sm text-text-base mb-3 flex flex-wrap gap-1">
+                                <span class="bg-border-subtle text-text-base px-2 py-0.5 rounded-full">ArcGIS Web Map</span>
+                                <span class="bg-border-subtle text-text-base px-2 py-0.5 rounded-full">Dashboard</span>
+                                <span class="bg-border-subtle text-text-base px-2 py-0.5 rounded-full">Form</span>
+                                <span class="bg-border-subtle text-text-base px-2 py-0.5 rounded-full">Story Map</span>
+                            </p>
+                            <p class="text-text-base mb-4 text-sm flex-grow">Developed an interactive ArcGIS StoryMap visualizing crime data by location, time, and type using police reports and public datasets. User-friendly interface for exploring spatial patterns.</p>
+                            <a href="https://storymaps.arcgis.com/stories/cdf283e657c14dec94d732aceded0fa9" target="_blank" rel="noopener noreferrer" class="mt-auto text-accent-primary hover:underline self-start">
                                 View Project <i class="fas fa-external-link-alt text-xs ml-1"></i>
                             </a>
                         </div>
@@ -217,22 +355,24 @@
         </section>
 
         <section id="experience" class="mb-20">
-            <div class="bg-white p-8 rounded-lg shadow-lg" data-aos="fade-up">
-                <h2 class="text-3xl font-bold mb-8 text-center text-blue-700">Work Experience</h2>
-                <div class="space-y-10 relative border-l-2 border-blue-200 pl-10">
+            <div class="bg-card-bg p-8 rounded-lg shadow-lg border border-border-subtle" data-aos="fade-up">
+                <h2 class="text-3xl font-bold mb-8 text-center text-accent-primary">Work Experience<span class="text-text-base">_</span></h2>
+                <div class="space-y-10 relative border-l-2 border-accent-primary pl-10">
                      <div class="mb-10" data-aos="fade-left" data-aos-delay="100">
-                         <div class="absolute w-4 h-4 bg-blue-600 rounded-full -left-2 border border-white"></div> <h3 class="text-xl font-semibold text-gray-800">OSL-Walmart | Solutions Advisor - Consumer Electronics</h3>
-                        <p class="text-sm text-gray-500 mb-2">Sept 2024 – Present</p>
-                        <ul class="list-disc list-inside space-y-1 text-gray-700">
+                         <div class="timeline-dot"></div>
+                         <h3 class="text-xl font-semibold text-accent-secondary">OSL-Walmart | Solutions Advisor - Consumer Electronics</h3>
+                        <p class="text-sm text-text-base mb-2">Sept 2024 – Present</p>
+                        <ul class="list-disc list-inside space-y-1 text-text-base text-sm">
                             <li>Assisted customers with technical inquiries, product recommendations, and troubleshooting.</li>
                             <li>Utilized POS systems and digital inventory tools for stock management and checkout efficiency.</li>
                             <li>Contributed to staff onboarding and customer interaction strategy improvement.</li>
                         </ul>
                     </div>
                      <div class="mb-10" data-aos="fade-left" data-aos-delay="200">
-                         <div class="absolute w-4 h-4 bg-blue-600 rounded-full -left-2 border border-white"></div> <h3 class="text-xl font-semibold text-gray-800">Infosys | Senior Systems Engineer</h3>
-                        <p class="text-sm text-gray-500 mb-2">Nov 2020 – Aug 2023 | Pune, Maharashtra</p>
-                        <ul class="list-disc list-inside space-y-1 text-gray-700">
+                         <div class="timeline-dot"></div>
+                         <h3 class="text-xl font-semibold text-accent-secondary">Infosys | Senior Systems Engineer</h3>
+                        <p class="text-sm text-text-base mb-2">Nov 2020 – Aug 2023 | Pune, Maharashtra</p>
+                        <ul class="list-disc list-inside space-y-1 text-text-base text-sm">
                             <li>Led design & implementation of a Python automation solution, reducing ticket processing time by 200-300%.</li>
                             <li>Improved data integrity by 15% via validation processes and SAP system optimization.</li>
                             <li>Performed complex SQL data analysis, producing reports and dashboards.</li>
@@ -240,9 +380,10 @@
                         </ul>
                     </div>
                     <div class="mb-10" data-aos="fade-left" data-aos-delay="300">
-                         <div class="absolute w-4 h-4 bg-blue-600 rounded-full -left-2 border border-white"></div> <h3 class="text-xl font-semibold text-gray-800">Icertis | Internship (Solution Engineer)</h3>
-                        <p class="text-sm text-gray-500 mb-2">Jan 2020 – June 2020 | Pune, Maharashtra</p>
-                        <ul class="list-disc list-inside space-y-1 text-gray-700">
+                         <div class="timeline-dot"></div>
+                         <h3 class="text-xl font-semibold text-accent-secondary">Icertis | Internship (Solution Engineer)</h3>
+                        <p class="text-sm text-text-base mb-2">Jan 2020 – June 2020 | Pune, Maharashtra</p>
+                        <ul class="list-disc list-inside space-y-1 text-text-base text-sm">
                             <li>Partnered with consultants to translate customer needs into technical solutions aligned with data governance.</li>
                             <li>Gained experience implementing secure and scalable product features.</li>
                         </ul>
@@ -252,32 +393,32 @@
         </section>
 
         <section id="education" class="mb-20">
-             <div class="bg-white p-8 rounded-lg shadow-lg" data-aos="fade-up">
-                <h2 class="text-3xl font-bold mb-8 text-center text-blue-700">Education</h2>
+             <div class="bg-card-bg p-8 rounded-lg shadow-lg border border-border-subtle" data-aos="fade-up">
+                <h2 class="text-3xl font-bold mb-8 text-center text-accent-primary">Education<span class="text-text-base">_</span></h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div class="text-center md:text-left" data-aos="fade-right" data-aos-delay="100">
-                         <i class="fas fa-graduation-cap text-4xl text-blue-500 mb-3"></i>
-                        <h3 class="text-xl font-semibold text-gray-800">Postgraduate in Big Data Analytics</h3>
-                        <p class="text-gray-700">Georgian College, Barrie, ON, Canada</p>
-                        <p class="text-sm text-gray-500">Completed: April 2024 | GPA: 92%</p>
+                         <i class="fas fa-graduation-cap text-4xl text-accent-primary mb-3 skill-icon"></i>
+                        <h3 class="text-xl font-semibold text-accent-secondary">Postgraduate in Big Data Analytics</h3>
+                        <p class="text-text-base text-sm">Georgian College, Barrie, ON, Canada</p>
+                        <p class="text-gray-400 text-xs">Completed: April 2024 | GPA: 92%</p>
                     </div>
                      <div class="text-center md:text-left" data-aos="fade-left" data-aos-delay="200">
-                         <i class="fas fa-university text-4xl text-blue-500 mb-3"></i>
-                        <h3 class="text-xl font-semibold text-gray-800">Bachelor of Engineering in Computer Science</h3>
-                        <p class="text-gray-700">Chitkara University, Chandigarh, India</p>
-                        <p class="text-sm text-gray-500">Completed: August 2020 | GPA: 8.2</p>
+                         <i class="fas fa-university text-4xl text-accent-primary mb-3 skill-icon"></i>
+                        <h3 class="text-xl font-semibold text-accent-secondary">Bachelor of Engineering in Computer Science</h3>
+                        <p class="text-text-base text-sm">Chitkara University, Chandigarh, India</p>
+                        <p class="text-gray-400 text-xs">Completed: August 2020 | GPA: 8.2</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <section id="certifications" class="mb-20">
-            <div class="bg-white p-8 rounded-lg shadow-lg" data-aos="fade-up">
-                <h2 class="text-3xl font-bold mb-8 text-center text-blue-700">Certifications</h2>
+            <div class="bg-card-bg p-8 rounded-lg shadow-lg border border-border-subtle" data-aos="fade-up">
+                <h2 class="text-3xl font-bold mb-8 text-center text-accent-primary">Certifications<span class="text-text-base">_</span></h2>
                  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                      <div data-aos="fade-up" data-aos-delay="100">
-                        <h3 class="text-lg font-semibold mb-3 text-gray-800 flex items-center"><i class="fas fa-certificate mr-2 text-green-500"></i>Data & Analytics</h3>
-                        <ul class="list-disc list-inside space-y-1 text-gray-700 text-sm pl-4">
+                        <h3 class="text-lg font-semibold mb-3 text-accent-secondary flex items-center"><i class="fas fa-certificate mr-2 skill-icon text-accent-primary"></i>Data & Analytics</h3>
+                        <ul class="list-disc list-inside space-y-1 text-text-base text-sm pl-4">
                             <li>SAS Visual Analytics 1 for SAS Viya (Apr 2024)</li>
                             <li>Nanodegree in Machine Learning Foundation – Udacity (Apr 2018)</li>
                             <li>Python Certifications (Basic & Advanced) – HackerRank</li>
@@ -285,14 +426,14 @@
                         </ul>
                     </div>
                      <div data-aos="fade-up" data-aos-delay="200">
-                        <h3 class="text-lg font-semibold mb-3 text-gray-800 flex items-center"><i class="fas fa-database mr-2 text-purple-500"></i>Database & Cloud</h3>
-                        <ul class="list-disc list-inside space-y-1 text-gray-700 text-sm pl-4">
+                        <h3 class="text-lg font-semibold mb-3 text-accent-secondary flex items-center"><i class="fas fa-database mr-2 skill-icon text-accent-primary"></i>Database & Cloud</h3>
+                        <ul class="list-disc list-inside space-y-1 text-text-base text-sm pl-4">
                             <li>Microsoft SQL Server 2019 Essential Training (Feb 2024)</li>
                             <li>AWS Cloud Foundations (Familiar)</li> </ul>
                     </div>
                      <div data-aos="fade-up" data-aos-delay="300">
-                        <h3 class="text-lg font-semibold mb-3 text-gray-800 flex items-center"><i class="fas fa-network-wired mr-2 text-yellow-500"></i>IT Support & Infrastructure</h3>
-                        <ul class="list-disc list-inside space-y-1 text-gray-700 text-sm pl-4">
+                        <h3 class="text-lg font-semibold mb-3 text-accent-secondary flex items-center"><i class="fas fa-network-wired mr-2 skill-icon text-accent-primary"></i>IT Support & Infrastructure</h3>
+                        <ul class="list-disc list-inside space-y-1 text-text-base text-sm pl-4">
                             <li>CompTIA A+ Core 1 (220-1101) Cert Prep</li>
                             <li>CompTIA A+ Core 2 (220-1102) Cert Prep</li>
                             <li>Networking Foundations: Networking Basics</li>
@@ -305,19 +446,19 @@
         </section>
 
         <section id="contact" class="mb-16">
-            <div class="bg-gradient-to-r from-blue-500 to-blue-700 text-white p-10 rounded-lg shadow-xl text-center" data-aos="zoom-in">
+            <div class="bg-gradient-to-r from-accent-primary to-accent-secondary text-background-main p-10 rounded-lg shadow-xl text-center border border-border-subtle" data-aos="zoom-in">
                 <h2 class="text-3xl font-bold mb-4">Get In Touch</h2>
                 <p class="text-lg mb-8 opacity-90">
                     Interested in collaborating or learning more about my work? Let's connect!
                 </p>
-                <a href="mailto:iyashgupta@gmail.com" class="inline-block bg-white text-blue-700 font-semibold px-8 py-3 rounded-lg shadow-md hover:bg-gray-100 hover:text-blue-800 transition duration-300 transform hover:scale-105">
+                <a href="mailto:iyashgupta@gmail.com" class="inline-block bg-card-bg text-accent-primary font-semibold px-8 py-3 rounded-lg shadow-md hover:bg-border-subtle hover:text-accent-secondary transition duration-300 transform hover:scale-105 border border-accent-primary">
                    <i class="fas fa-envelope mr-2"></i> Contact Me
                 </a>
                  <div class="mt-10 flex justify-center space-x-6">
-                    <a href="https://linkedin.com/in/iyashgupta" target="_blank" rel="noopener noreferrer" class="text-white hover:text-blue-200 transition duration-300" aria-label="LinkedIn Profile">
+                    <a href="https://linkedin.com/in/iyashgupta" target="_blank" rel="noopener noreferrer" class="text-background-main hover:text-text-base transition duration-300 skill-icon" aria-label="LinkedIn Profile">
                         <i class="fab fa-linkedin fa-3x"></i>
                     </a>
-                    <a href="[Your GitHub URL]" target="_blank" rel="noopener noreferrer" class="text-white hover:text-blue-200 transition duration-300" aria-label="GitHub Profile">
+                    <a href="https://github.com/Pr33datorrr" target="_blank" rel="noopener noreferrer" class="text-background-main hover:text-text-base transition duration-300 skill-icon" aria-label="GitHub Profile">
                         <i class="fab fa-github fa-3x"></i>
                          </a>
                     </div>
@@ -326,19 +467,128 @@
 
     </div>
 
-    <footer class="bg-gray-800 text-gray-300 py-6">
+    <footer class="bg-card-bg text-text-base py-6 border-t border-border-subtle">
         <div class="container mx-auto px-6 text-center text-sm">
             <p>&copy; 2025 Yash Gupta. All rights reserved.</p>
-            <p class="mt-1">Built with HTML, Tailwind CSS, and <i class="fas fa-heart text-red-500"></i></p>
+            <p class="mt-1">Built with HTML, Tailwind CSS, <span class="text-accent-primary">&lt;/&gt;</span> and <i class="fas fa-heart text-red-500"></i></p>
         </div>
     </footer>
 
+    <script>
+        // particles.js configuration
+        particlesJS('particles-js', {
+            "particles": {
+                "number": {
+                    "value": 50, // Fewer particles
+                    "density": {
+                        "enable": true,
+                        "value_area": 1000 // Larger area
+                    }
+                },
+                "color": {
+                    "value": "#60a5fa" // Default color (can be overridden by theme CSS if using variables directly)
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    }
+                },
+                "opacity": {
+                    "value": 0.6, // Slightly more opaque
+                    "random": false,
+                    "anim": {
+                        "enable": false,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 2, // Smaller particles
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 40,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 120, // Shorter lines
+                    "color": "#34d399", // Default color (can be overridden)
+                    "opacity": 0.3, // Less opaque lines
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 3, // Slower movement
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "grab"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 100, // Shorter grab distance
+                        "line_linked": {
+                            "opacity": 0.7 // More opaque lines on grab
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+    </script>
+
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Initialize AOS
         AOS.init({
             duration: 800, // Animation duration
             once: true, // Whether animation should happen only once - while scrolling down
+            mirror: false, // Whether elements should animate out while scrolling past them
         });
 
         // Mobile Menu Toggle Script
@@ -358,6 +608,93 @@
                 });
             });
         }
+
+        // Theme Toggle Script
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+        const body = document.body;
+        const themeIcon = document.getElementById('theme-toggle-icon');
+        const themeIconMobile = document.getElementById('theme-toggle-icon-mobile');
+
+        // Check for saved theme in localStorage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            body.classList.remove('dark-theme', 'light-theme');
+            body.classList.add(savedTheme);
+            updateThemeIcon(savedTheme);
+        } else {
+            // Default to dark theme if no theme is saved
+            body.classList.add('dark-theme');
+            updateThemeIcon('dark-theme');
+        }
+
+        function updateThemeIcon(theme) {
+            if (theme === 'dark-theme') {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                 themeIconMobile.classList.remove('fa-sun');
+                themeIconMobile.classList.add('fa-moon');
+            } else {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                 themeIconMobile.classList.remove('fa-moon');
+                themeIconMobile.classList.add('fa-sun');
+            }
+        }
+
+        function toggleTheme() {
+            if (body.classList.contains('dark-theme')) {
+                body.classList.remove('dark-theme');
+                body.classList.add('light-theme');
+                localStorage.setItem('theme', 'light-theme');
+                updateThemeIcon('light-theme');
+            } else {
+                body.classList.remove('light-theme');
+                body.classList.add('dark-theme');
+                localStorage.setItem('theme', 'dark-theme');
+                updateThemeIcon('dark-theme');
+            }
+             // Note: particles.js color update based on CSS variables might require
+             // re-initialization or using a library that supports dynamic color updates.
+             // For this implementation, some particle colors are set in the JS config
+             // and won't change with the theme unless re-initialized.
+        }
+
+        if (themeToggle) {
+             themeToggle.addEventListener('click', toggleTheme);
+        }
+         if (themeToggleMobile) {
+             themeToggleMobile.addEventListener('click', toggleTheme);
+        }
+
+
+        // Scroll spy - highlight active nav link (requires minor adjustments for exact scroll points)
+        window.addEventListener('scroll', () => {
+            let currentSectionId = '';
+            const sections = document.querySelectorAll('section');
+            const navHeight = document.querySelector('nav').offsetHeight;
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - navHeight; // Adjust for fixed header
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop && pageYOffset < sectionTop + sectionHeight) {
+                    currentSectionId = section.getAttribute('id');
+                }
+            });
+
+            document.querySelectorAll('nav a').forEach(link => {
+                // Remove both dark and light active classes
+                link.classList.remove('text-accent-secondary', 'font-semibold', 'text-light-accent-secondary');
+
+                if (link.getAttribute('href').substring(1) === currentSectionId) {
+                     if (body.classList.contains('dark-theme')) {
+                        link.classList.add('text-accent-secondary', 'font-semibold'); // Dark theme active color
+                     } else {
+                         link.classList.add('text-light-accent-secondary', 'font-semibold'); // Light theme active color
+                     }
+                }
+            });
+        });
     </script>
 
 </body>
